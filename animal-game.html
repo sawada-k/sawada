@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>動物パズルゲーム</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #ffecb3, #ffd700);
+        }
+        .game-container {
+            width: 90%;
+            max-width: 800px;
+            text-align: center;
+        }
+        .title {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        .animal-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .animal-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .animal-card:hover {
+            transform: scale(1.05);
+        }
+        .animal-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .animal-name {
+            font-size: 1.2rem;
+            color: #333;
+            margin-top: 0.5rem;
+        }
+        .score {
+            font-size: 1.5rem;
+            color: #333;
+            margin: 1rem 0;
+        }
+        .start-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .start-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1 class="title">動物パズルゲーム</h1>
+        <div class="animal-grid" id="animalGrid">
+            <!-- 動物カードはJavaScriptで動的に生成されます -->
+        </div>
+        <div class="score" id="score">スコア: 0</div>
+        <button class="start-button" onclick="startGame()">ゲームを始める</button>
+    </div>
+
+    <script>
+        const animals = [
+            { name: 'ライオン', image: 'https://placekitten.com/300/200' },
+            { name: 'パンダ', image: 'https://placekitten.com/300/200' },
+            { name: 'ゾウ', image: 'https://placekitten.com/300/200' },
+            { name: 'カバ', image: 'https://placekitten.com/300/200' },
+            { name: 'カンガルー', image: 'https://placekitten.com/300/200' },
+            { name: 'キリン', image: 'https://placekitten.com/300/200' }
+        ];
+
+        let score = 0;
+        let selectedAnimal = null;
+        let gameStarted = false;
+
+        function startGame() {
+            score = 0;
+            document.getElementById('score').textContent = 'スコア: ' + score;
+            selectedAnimal = null;
+            gameStarted = true;
+            updateAnimalGrid();
+        }
+
+        function updateAnimalGrid() {
+            const grid = document.getElementById('animalGrid');
+            grid.innerHTML = '';
+
+            // 動物をランダムに並べ替え
+            const shuffledAnimals = [...animals].sort(() => Math.random() - 0.5);
+
+            shuffledAnimals.forEach(animal => {
+                const card = document.createElement('div');
+                card.className = 'animal-card';
+                card.innerHTML = `
+                    <img src="${animal.image}" alt="${animal.name}" class="animal-image">
+                    <div class="animal-name">${animal.name}</div>
+                `;
+                card.onclick = () => handleAnimalClick(animal);
+                grid.appendChild(card);
+            });
+        }
+
+        function handleAnimalClick(animal) {
+            if (!gameStarted) return;
+
+            if (selectedAnimal === null) {
+                selectedAnimal = animal;
+                return;
+            }
+
+            if (selectedAnimal.name === animal.name) {
+                score += 10;
+                document.getElementById('score').textContent = 'スコア: ' + score;
+            } else {
+                score -= 5;
+                document.getElementById('score').textContent = 'スコア: ' + score;
+            }
+
+            selectedAnimal = null;
+            updateAnimalGrid();
+        }
+    </script>
+</body>
+</html>
