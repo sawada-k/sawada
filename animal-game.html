@@ -39,6 +39,11 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             cursor: pointer;
             transition: transform 0.2s;
+            opacity: 0.5;
+        }
+        .animal-card:hover {
+            transform: scale(1.05);
+            opacity: 1;
         }
         .animal-card:hover {
             transform: scale(1.05);
@@ -99,10 +104,22 @@
         let gameStarted = false;
 
         function startGame() {
+            // ゲーム開始ボタンを無効化
+            const startButton = document.querySelector('.start-button');
+            startButton.disabled = true;
+            startButton.style.opacity = '0.5';
+
+            // スコアをリセット
             score = 0;
             document.getElementById('score').textContent = 'スコア: ' + score;
+
+            // 選択中の動物をリセット
             selectedAnimal = null;
+
+            // ゲーム状態を開始に設定
             gameStarted = true;
+
+            // 動物グリッドを更新
             updateAnimalGrid();
         }
 
