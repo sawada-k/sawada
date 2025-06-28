@@ -1,5 +1,0 @@
-User-agent: *
-Allow: /
-
-# XMLサイトマップの場所
-Sitemap: https://example.com/sitemap.xml
